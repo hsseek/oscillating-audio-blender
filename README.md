@@ -2,6 +2,8 @@
 
 This is a simple GUI tool to blend two WAV files using an oscillating pattern over time, and export the result as an OGG file.
 
+![GUI Screenshot](gui-screenshot.png)
+
 ## Features
 
 - Load two WAV files and blend them over time
@@ -9,6 +11,7 @@ This is a simple GUI tool to blend two WAV files using an oscillating pattern ov
 - Clean GUI with PyQt6
 - Export to `.ogg` format
 - Uses `config.ini` to remember default settings
+- Also supports command-line usage
 
 ## Requirements
 
@@ -52,20 +55,33 @@ cycle_minutes = 1
 [MIX]
 gain_1 = 1.0
 gain_2 = 2.0
-blend_min = 0.1
-blend_max = 0.9
+blend_1_start = 0.1
+blend_1_middle = 0.9
 
 [AUDIO]
 sample_rate = 22050
 ```
 
-## Exporting to `.exe`
+## Command-Line Usage
 
-To generate a `.exe` file for distribution:
+You can also run the app from the terminal using CLI flags:
 
 ```bash
-pip install pyinstaller
-pyinstaller --noconfirm --onefile --windowed gui_audio_blender.py
+python main.py --file-1 pink.wav --file-2 brown.wav --gain-1 1.0 --gain-2 2.0 --blend-start 0.2 --blend-middle 0.8 --cycle-duration 2
 ```
 
-The resulting `.exe` will be in the `dist/` folder.
+### CLI Flags
+
+| Flag              | Description                                 |
+|-------------------|---------------------------------------------|
+| `--file-1`, `-f1` | Path to first WAV file (File 1)             |
+| `--file-2`, `-f2` | Path to second WAV file (File 2)            |
+| `--gain-1`, `-g1` | Gain multiplier for File 1 (e.g., 1.0)      |
+| `--gain-2`, `-g2` | Gain multiplier for File 2 (e.g., 2.0)      |
+| `--blend-start`   | File 1’s blend value at start (0–1)         |
+| `--blend-middle`  | File 1’s blend value in middle (0–1)        |
+| `--cycle-duration`| Cycle duration in minutes (e.g., 2)         |
+| `--sample-rate`   | Audio sample rate (e.g., 22050)             |
+| `--output`        | Name of the output `.ogg` file              |
+
+If no flags are given, values are read from `config.ini`.
