@@ -71,7 +71,8 @@ class AudioBlender(QWidget):
 
         # Output file
         output_layout = QHBoxLayout()
-        self.output_path = QLineEdit("blended_output.ogg")
+        default_filename = f"oscbldr-{self.defaults['cycle_minutes']}-{int(self.defaults['gain_1'] * 10):02d}-{int(self.defaults['gain_2'] * 10):02d}-{int(self.defaults['blend_1_start'] * 100):02d}-{int(self.defaults['blend_1_middle'] * 100):02d}.ogg"
+        self.output_path = QLineEdit(default_filename)
         self.output_path.setMinimumWidth(200)
         output_btn = QPushButton("Save As")
         output_btn.clicked.connect(self.browse_output)

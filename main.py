@@ -27,10 +27,10 @@ def load_config():
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Oscillating Audio Blender")
-    parser.add_argument("-f1", dest="file_1", help="Path to first WAV file")
-    parser.add_argument("-f2", dest="file_2", help="Path to second WAV file")
-    parser.add_argument("-g1", dest="gain_1", type=float, help="Gain for first file")
-    parser.add_argument("-g2", dest="gain_2", type=float, help="Gain for second file")
+    parser.add_argument("--file1", dest="file_1", help="Path to first WAV file")
+    parser.add_argument("--file2", dest="file_2", help="Path to second WAV file")
+    parser.add_argument("--gain1", dest="gain_1", type=float, help="Gain for first file")
+    parser.add_argument("--gain2", dest="gain_2", type=float, help="Gain for second file")
     parser.add_argument("--blend-start", dest="blend_1_start", type=float, help="Blend value at start (0-1)")
     parser.add_argument("--blend-middle", dest="blend_1_middle", type=float, help="Blend value in middle (0-1)")
     parser.add_argument("--cycle-duration", dest="cycle_minutes", type=int, help="Cycle duration in minutes")
@@ -107,4 +107,9 @@ if __name__ == "__main__":
     config["cycle_minutes"] = args.cycle_minutes if args.cycle_minutes is not None else config["cycle_minutes"]
     config["sample_rate"] = args.sample_rate if args.sample_rate is not None else config["sample_rate"]
 
-    generate_audio(config, args.output)
+    if args.output == "blended_output.ogg":
+        output = f"oscbldr-{config['cycle_minutes']}-{int(config['gain_1'] * 10):02d}-{int(config['gain_2'] * 10):02d}-{int(config['blend_1_start'] * 100):02d}-{int(config['blend_1_middle'] * 100):02d}.ogg"
+    else:
+        output = args.output
+
+    generate_audio(config, output)

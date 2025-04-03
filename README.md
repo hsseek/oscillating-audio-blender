@@ -74,10 +74,10 @@ python main.py --file-1 pink.wav --file-2 brown.wav --gain-1 1.0 --gain-2 2.0 --
 
 | Flag              | Description                                 |
 |-------------------|---------------------------------------------|
-| `--file-1`, `-f1` | Path to first WAV file (File 1)             |
-| `--file-2`, `-f2` | Path to second WAV file (File 2)            |
-| `--gain-1`, `-g1` | Gain multiplier for File 1 (e.g., 1.0)      |
-| `--gain-2`, `-g2` | Gain multiplier for File 2 (e.g., 2.0)      |
+| `--file1`         | Path to first WAV file (File 1)             |
+| `--file2`         | Path to second WAV file (File 2)            |
+| `--gain1`         | Gain multiplier for File 1 (e.g., 1.0)      |
+| `--gain2`         | Gain multiplier for File 2 (e.g., 2.0)      |
 | `--blend-start`   | File 1’s blend value at start (0–1)         |
 | `--blend-middle`  | File 1’s blend value in middle (0–1)        |
 | `--cycle-duration`| Cycle duration in minutes (e.g., 2)         |
