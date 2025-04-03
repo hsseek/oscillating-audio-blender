@@ -85,7 +85,7 @@ def generate_audio(cfg, output_file):
     log(f"✅ Export complete: {output_file}")
 
     # Report summary
-    print("\\nParameters:")
+    print("\nParameters:")
     print(f"- File 1: {cfg['file_1']} (gain: {cfg['gain_1']})")
     print(f"- File 2: {cfg['file_2']} (gain: {cfg['gain_2']})")
     print(f"- Blend: File 1 from {cfg['blend_1_start']} → {cfg['blend_1_middle']} → {cfg['blend_1_start']}")
