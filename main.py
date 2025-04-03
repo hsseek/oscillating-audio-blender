@@ -43,6 +43,11 @@ def load_wav(path):
         frames = wf.readframes(wf.getnframes())
         return np.frombuffer(frames, dtype=np.int16)
 
+def print_progress(current, total, width=40):
+    progress = int(width * current / total)
+    bar = "█" * progress + "-" * (width - progress)
+    print(f"\rProgress: |{bar}| {int(100 * current / total)}%", end="")
+
 def generate_audio(cfg, output_file):
     sr = cfg["sample_rate"]
 
@@ -64,11 +69,27 @@ def generate_audio(cfg, output_file):
 
     for i in range(total_samples):
         t = i / sr
-        blend = cfg["blend_1_start"] + (cfg["blend_1_middle"] - cfg["blend_1_start"]) * (
-            1 - np.cos(2 * np.pi * t / total_sec)) / 2
+
+        buffer_sec = min(10, total_sec * 0.10)
+        if t < buffer_sec or t > (total_sec - buffer_sec):
+            blend = cfg["blend_1_start"]
+        else:
+            # Adjust time to exclude buffer zone
+            t_adj = t - buffer_sec
+            inner_duration = total_sec - 2 * buffer_sec
+            blend = cfg["blend_1_start"] + (cfg["blend_1_middle"] - cfg["blend_1_start"]) * (
+                    1 - np.cos(2 * np.pi * t_adj / inner_duration)) / 2
+
         s1 = a1[i % length]
         s2 = a2[i % length]
         output[i] = s1 * blend + s2 * (1 - blend)
+
+        # CLI progress bar
+        if i % (total_samples // 100) == 0:
+            print_progress(i, total_samples)
+
+    print_progress(total_samples, total_samples)
+    print()  # newline after progress bar
 
     max_val = np.max(np.abs(output))
     if max_val > 32767:

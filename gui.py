@@ -216,9 +216,17 @@ class AudioBlender(QWidget):
 
         for i in range(len(output)):
             t = i / sample_rate
-            # Cosine-shaped blend: start → middle → end
-            blend = blend_1_start_val + (blend_1_mid_val - blend_1_start_val) * (
-                1 - np.cos(2 * np.pi * t / total_seconds)) / 2
+
+            buffer_sec = min(10, total_seconds * 0.10)
+            if t < buffer_sec or t > (total_seconds - buffer_sec):
+                blend = blend_1_start_val
+            else:
+                # Adjust time to exclude buffer zone
+                t_adj = t - buffer_sec
+                inner_duration = total_seconds - 2 * buffer_sec
+                blend = blend_1_start_val + (blend_1_mid_val - blend_1_start_val) * (
+                        1 - np.cos(2 * np.pi * t_adj / inner_duration)) / 2
+
             sample_1 = audio_1[i % length]
             sample_2 = audio_2[i % length]
             output[i] = sample_1 * blend + sample_2 * (1 - blend)
