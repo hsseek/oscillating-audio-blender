@@ -8,6 +8,7 @@ This is a simple GUI tool to blend two WAV files using an oscillating pattern ov
 
 - Load two WAV files and blend them over time
 - Custom gain, blend shape (start → middle → end)
+- The the blend value at the end matches the blend value at the start, which makes **seamless playing with looping**
 - Clean GUI with PyQt6
 - Export to `.ogg` format
 - Uses `config.ini` to remember default settings
@@ -67,7 +68,7 @@ sample_rate = 22050
 You can also run the app from the terminal using CLI flags:
 
 ```bash
-python main.py --file-1 pink.wav --file-2 brown.wav --gain-1 1.0 --gain-2 2.0 --blend-start 0.2 --blend-middle 0.8 --cycle-duration 2
+python main.py --file1 pink.wav --file2 brown.wav --gain1 0.8 --gain2 1.2 --blend-start 0.2 --blend-middle 0.8 --cycle-duration 2
 ```
 
 ### CLI Flags
