@@ -29,8 +29,8 @@ class AudioBlender(QWidget):
             "cycle_minutes": self.config.getint("TIMING", "cycle_minutes", fallback=1),
             "gain_1": self.config.getfloat("MIX", "gain_1", fallback=1.0),
             "gain_2": self.config.getfloat("MIX", "gain_2", fallback=1.0),
-            "blend_min": self.config.getfloat("MIX", "blend_min", fallback=0.2),
-            "blend_max": self.config.getfloat("MIX", "blend_max", fallback=0.8),
+            "blend_1_start": self.config.getfloat("MIX", "blend_1_start", fallback=0.2),
+            "blend_1_middle": self.config.getfloat("MIX", "blend_1_middle", fallback=0.8),
             "sample_rate": self.config.getint("AUDIO", "sample_rate", fallback=22050),
         }
 
@@ -86,56 +86,56 @@ class AudioBlender(QWidget):
 
         # Start
         start_row = QHBoxLayout()
-        self.blend_min_slider = QSlider(Qt.Orientation.Horizontal)
-        self.blend_min_slider.setRange(0, 100)
-        self.blend_min_slider.setValue(int(self.defaults["blend_min"] * 100))
-        self.blend_min_spin = QDoubleSpinBox()
-        self.blend_min_spin.setRange(0.0, 1.0)
-        self.blend_min_spin.setSingleStep(0.01)
-        self.blend_min_spin.setValue(self.defaults["blend_min"])
-        self.blend_min_slider.valueChanged.connect(lambda val: self.blend_min_spin.setValue(val / 100))
-        self.blend_min_spin.valueChanged.connect(lambda val: self.blend_min_slider.setValue(int(val * 100)))
+        self.blend_1_start_slider = QSlider(Qt.Orientation.Horizontal)
+        self.blend_1_start_slider.setRange(0, 100)
+        self.blend_1_start_slider.setValue(int(self.defaults["blend_1_start"] * 100))
+        self.blend_1_start_spin = QDoubleSpinBox()
+        self.blend_1_start_spin.setRange(0.0, 1.0)
+        self.blend_1_start_spin.setSingleStep(0.01)
+        self.blend_1_start_spin.setValue(self.defaults["blend_1_start"])
+        self.blend_1_start_slider.valueChanged.connect(lambda val: self.blend_1_start_spin.setValue(val / 100))
+        self.blend_1_start_spin.valueChanged.connect(lambda val: self.blend_1_start_slider.setValue(int(val * 100)))
         start_label = QLabel("File 1 at start:")
         start_label.setFixedWidth(label_width)
         start_row.addWidget(start_label)
-        start_row.addWidget(self.blend_min_slider)
-        start_row.addWidget(self.blend_min_spin)
+        start_row.addWidget(self.blend_1_start_slider)
+        start_row.addWidget(self.blend_1_start_spin)
 
         # Middle
         middle_row = QHBoxLayout()
-        self.blend_mid_slider = QSlider(Qt.Orientation.Horizontal)
-        self.blend_mid_slider.setRange(0, 100)
-        self.blend_mid_slider.setValue(50)
-        self.blend_mid_spin = QDoubleSpinBox()
-        self.blend_mid_spin.setRange(0.0, 1.0)
-        self.blend_mid_spin.setSingleStep(0.01)
-        self.blend_mid_spin.setValue(0.5)
-        self.blend_mid_slider.valueChanged.connect(lambda val: self.blend_mid_spin.setValue(val / 100))
-        self.blend_mid_spin.valueChanged.connect(lambda val: self.blend_mid_slider.setValue(int(val * 100)))
+        self.blend_1_mid_slider = QSlider(Qt.Orientation.Horizontal)
+        self.blend_1_mid_slider.setRange(0, 100)
+        self.blend_1_mid_slider.setValue(int(self.defaults["blend_1_middle"] * 100))
+        self.blend_1_mid_spin = QDoubleSpinBox()
+        self.blend_1_mid_spin.setRange(0.0, 1.0)
+        self.blend_1_mid_spin.setSingleStep(0.01)
+        self.blend_1_mid_spin.setValue(self.defaults["blend_1_middle"])
+        self.blend_1_mid_slider.valueChanged.connect(lambda val: self.blend_1_mid_spin.setValue(val / 100))
+        self.blend_1_mid_spin.valueChanged.connect(lambda val: self.blend_1_mid_slider.setValue(int(val * 100)))
         middle_label = QLabel("File 1 in middle:")
         middle_label.setFixedWidth(label_width)
         middle_row.addWidget(middle_label)
-        middle_row.addWidget(self.blend_mid_slider)
-        middle_row.addWidget(self.blend_mid_spin)
+        middle_row.addWidget(self.blend_1_mid_slider)
+        middle_row.addWidget(self.blend_1_mid_spin)
 
         # End (mirrors start)
         end_row = QHBoxLayout()
-        self.blend_max_slider = QSlider(Qt.Orientation.Horizontal)
-        self.blend_max_slider.setRange(0, 100)
-        self.blend_max_slider.setValue(int(self.defaults["blend_min"] * 100))  # mirror start
-        self.blend_max_spin = QDoubleSpinBox()
-        self.blend_max_spin.setRange(0.0, 1.0)
-        self.blend_max_spin.setSingleStep(0.01)
-        self.blend_max_spin.setValue(self.defaults["blend_min"])
-        self.blend_max_slider.setEnabled(False)
-        self.blend_max_spin.setEnabled(False)
-        self.blend_min_slider.valueChanged.connect(self.blend_max_slider.setValue)
-        self.blend_min_spin.valueChanged.connect(self.blend_max_spin.setValue)
+        self.blend_1_end_slider = QSlider(Qt.Orientation.Horizontal)
+        self.blend_1_end_slider.setRange(0, 100)
+        self.blend_1_end_slider.setValue(int(self.defaults["blend_1_start"] * 100))  # mirror start
+        self.blend_1_end_spin = QDoubleSpinBox()
+        self.blend_1_end_spin.setRange(0.0, 1.0)
+        self.blend_1_end_spin.setSingleStep(0.01)
+        self.blend_1_end_spin.setValue(self.defaults["blend_1_start"])
+        self.blend_1_end_slider.setEnabled(False)
+        self.blend_1_end_spin.setEnabled(False)
+        self.blend_1_start_slider.valueChanged.connect(self.blend_1_end_slider.setValue)
+        self.blend_1_start_spin.valueChanged.connect(self.blend_1_end_spin.setValue)
         end_label = QLabel("File 1 at end:")
         end_label.setFixedWidth(label_width)
         end_row.addWidget(end_label)
-        end_row.addWidget(self.blend_max_slider)
-        end_row.addWidget(self.blend_max_spin)
+        end_row.addWidget(self.blend_1_end_slider)
+        end_row.addWidget(self.blend_1_end_spin)
 
         blend_layout.addLayout(start_row)
         blend_layout.addLayout(middle_row)
@@ -206,8 +206,8 @@ class AudioBlender(QWidget):
         audio_2 = audio_2[:length] * self.gain_2.value()
         self.log("Applied manual gain.")
 
-        blend_min_val = self.blend_min_spin.value()
-        blend_mid_val = self.blend_mid_spin.value()
+        blend_1_start_val = self.blend_1_start_spin.value()
+        blend_1_mid_val = self.blend_1_mid_spin.value()
         total_seconds = self.duration.value() * 60
         output = np.zeros(total_seconds * sample_rate, dtype=np.float64)
         self.progress.setValue(0)
@@ -216,7 +216,7 @@ class AudioBlender(QWidget):
         for i in range(len(output)):
             t = i / sample_rate
             # Cosine-shaped blend: start → middle → end
-            blend = blend_min_val + (blend_mid_val - blend_min_val) * (
+            blend = blend_1_start_val + (blend_1_mid_val - blend_1_start_val) * (
                 1 - np.cos(2 * np.pi * t / total_seconds)) / 2
             sample_1 = audio_1[i % length]
             sample_2 = audio_2[i % length]
